@@ -26,32 +26,36 @@ export default function RegisterScreen({ route, navigation }) {
       return;
     }
 
-    // ✅ TEMP FRONTEND SUCCESS FLOW
-    navigation.reset({
-      index: 0,
-      routes: [{ name: role === "User" ? "UserHome" : "TrainerHome" }],
-    });
+    // ✅ TEMP FRONTEND SUCCESS
+    if (role === "User") {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "UserHome" }],
+      });
+    } else {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "TrainerHome" }],
+      });
+    }
   };
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={styles.container}>
         {/* BACK */}
         <Text style={styles.back} onPress={() => navigation.goBack()}>
           ← Back
         </Text>
 
-        {/* HEADER */}
+        {/* TITLE */}
         <Text style={styles.title}>{role} Registration</Text>
         <Text style={styles.subtitle}>
           Create your account to{" "}
           {role === "User" ? "find trainers" : "share your skills"}
         </Text>
 
-        {/* FORM CARD */}
+        {/* CARD */}
         <View style={styles.card}>
           <Input
             icon="person-outline"
@@ -75,7 +79,6 @@ export default function RegisterScreen({ route, navigation }) {
             value={phone}
             setValue={setPhone}
             placeholder="+91 98765 43210"
-            keyboard="phone-pad"
           />
 
           <Input
@@ -83,15 +86,11 @@ export default function RegisterScreen({ route, navigation }) {
             label="Password"
             value={password}
             setValue={setPassword}
-            placeholder="••••••••"
+            placeholder="******"
             secure
           />
 
-          <TouchableOpacity
-            style={styles.button}
-            activeOpacity={0.85}
-            onPress={handleRegister}
-          >
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </View>
@@ -112,15 +111,7 @@ export default function RegisterScreen({ route, navigation }) {
 }
 
 /* INPUT COMPONENT */
-function Input({
-  icon,
-  label,
-  value,
-  setValue,
-  placeholder,
-  secure = false,
-  keyboard = "default",
-}) {
+function Input({ icon, label, value, setValue, placeholder, secure }) {
   return (
     <View style={styles.inputGroup}>
       <Text style={styles.label}>{label}</Text>
@@ -132,9 +123,7 @@ function Input({
           onChangeText={setValue}
           placeholder={placeholder}
           placeholderTextColor={Colors.muted}
-          secureTextEntry={secure}
-          keyboardType={keyboard}
-          autoCapitalize="none"
+          secureTextEntry={secure === true}
           style={styles.input}
         />
       </View>
@@ -150,22 +139,22 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 20,
-    paddingBottom: 40,
+    paddingTop: 60,
   },
   back: {
     color: Colors.muted,
-    marginBottom: 16,
+    marginBottom: 20,
     fontSize: 14,
   },
   title: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: "700",
     color: Colors.text,
   },
   subtitle: {
     color: Colors.muted,
     marginTop: 6,
-    marginBottom: 28,
+    marginBottom: 30,
   },
   card: {
     backgroundColor: Colors.card,
@@ -175,10 +164,10 @@ const styles = StyleSheet.create({
     borderColor: Colors.border,
   },
   inputGroup: {
-    marginBottom: 18,
+    marginBottom: 16,
   },
   label: {
-    color: Colors.muted,
+    color: Colors.text,
     fontSize: 13,
     marginBottom: 6,
   },
@@ -211,7 +200,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: Colors.muted,
     textAlign: "center",
-    marginTop: 22,
+    marginTop: 24,
   },
   login: {
     color: Colors.primary,
